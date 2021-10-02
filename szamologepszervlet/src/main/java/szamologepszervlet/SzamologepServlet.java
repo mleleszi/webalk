@@ -28,56 +28,56 @@ public class SzamologepServlet extends HttpServlet{
 				errorList.add("a(z) " + parameterName + " parameter szam kell legyen");
 			}
 		}
-		
+
 		return value;
 	}
-	
-	
+
+
 	private void checkOperator(String operator, List<String> errorList) {
-		
+
 		if (operator == null) {
 			errorList.add("az operator parameter nem lehet ures");
 		} else {
 			if (!Arrays.asList(new String[]{"+", "-", "*", "/"}).contains(operator)) {
 				errorList.add("nem tamogatott muvelet");
 			}
-		} 
-		
+		}
+
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ResultDto resultDto = new ResultDto();
 		List<String> errorList = new ArrayList<String>();
-		
+
 		Double a = checkAndGetValueAsDouble(req, "a", errorList);
 		resultDto.setA(req.getParameter("a"));
-		
+
 		Double b = checkAndGetValueAsDouble(req, "b", errorList);
 		resultDto.setB(req.getParameter("b"));
-		
+
 		String operator = req.getParameter("operator");
 		resultDto.setOperator(operator);
 
 		checkOperator(operator, errorList);
-		
-		
+
+
 		Double result = 0.0;
 		if (errorList.isEmpty()) {
 			result = new Szamologep().calculate(a, b, operator);
 		}
-		
+
 		resultDto.setResult(result);
 		resultDto.setErrorList(errorList);
 		// eltarolja a keres attributumba az osszes infot, 
 		// hogy a jsp is elerje
 		req.setAttribute("result", resultDto);
-		
+
 		// forward
 		RequestDispatcher rd = req.getSession()
 				.getServletContext( )
 				.getRequestDispatcher("/");
-		
+
 		rd.forward(req, resp);
 	}
 

@@ -11,12 +11,12 @@ szamologepszervlet.ResultDto result = (request.getAttribute("result") != null) ?
 
 
 
-String resultText = (result == null) ?
+String resultText = (result.getResult() == null) ?
 				"" : "result " + result.getResult().toString();
 %>
 
 ver: 0.5
-<form method="post" action="/<%=request.getContextPath()%>/szamologep.do">
+<form method="post" action="<%=request.getContextPath()%>/szamologep.do">
     <input type="text" name="a" value="<%= result.getA() %>"/><br>
     <input type="text" name="b" value="<%= result.getB() %>"/><br>
     <select name="operator">
