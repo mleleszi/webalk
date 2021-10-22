@@ -14,14 +14,12 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public List<String> readAllStudents() {
-        File studentsFile = new File("students.txt");
-        return readFromFile(studentsFile);
+        return readFromFile(new File("students.txt"));
     }
 
     @Override
     public List<String> readAllProverbs() {
-        File proverbsFile = new File("proverbs.txt");
-        return readFromFile(proverbsFile);
+        return readFromFile(new File("proverbs.txt"));
     }
 
     private List<String> readFromFile(File file){
@@ -32,7 +30,6 @@ public class RepositoryImpl implements Repository {
             String line;
             while((line = br.readLine()) != null){
                 list.add(line);
-
             }
             br.close();
         } catch(IOException e){
