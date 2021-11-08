@@ -1,9 +1,10 @@
-package hu.me.iit.webalk.db;
+package hu.me.iit.webalk.db.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import hu.me.iit.webalk.db.service.People;
+import hu.me.iit.webalk.db.service.PeopleService;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class PeopleController {
         this.peopleService = peopleService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public Iterable<PeopleDto> getAllPeople() {
       List<PeopleDto> peopleDtoList = new ArrayList<>();
       for(People people :  peopleService.getAllPeople()){
@@ -26,4 +27,11 @@ public class PeopleController {
 
       return peopleDtoList;
     }
+
+    @PostMapping(consumes = "application/json")
+    public PeopleDto save(@RequestBody @Valid PeopleCreateDto peopleCreateDto){
+       return new PeopleDto(peopleService.create(peopleCreateDto.toPeople()));
+    }
+
+
 }
