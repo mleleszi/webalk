@@ -33,5 +33,11 @@ public class PeopleController {
        return new PeopleDto(peopleService.create(peopleCreateDto.toPeople()));
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id){
+        peopleService.deleteById(id);
+    }
+
+
 
 }
