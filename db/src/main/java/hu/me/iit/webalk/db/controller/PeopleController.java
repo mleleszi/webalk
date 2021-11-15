@@ -28,9 +28,19 @@ public class PeopleController {
       return peopleDtoList;
     }
 
+    @GetMapping("/{id}")
+    public PeopleDto getById(@PathVariable Long id){
+        return new PeopleDto(peopleService.getById(id));
+    }
+
     @PostMapping(consumes = "application/json")
     public PeopleDto save(@RequestBody @Valid PeopleCreateDto peopleCreateDto){
        return new PeopleDto(peopleService.create(peopleCreateDto.toPeople()));
+    }
+
+    @PutMapping
+    public void save(@RequestBody @Valid PeopleDto peopleDto){
+        peopleService.save(peopleDto.toPeople());
     }
 
     @DeleteMapping("/{id}")
