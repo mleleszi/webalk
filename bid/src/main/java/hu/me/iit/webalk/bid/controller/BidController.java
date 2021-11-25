@@ -34,4 +34,15 @@ public class BidController {
     public BidDto save(@RequestBody @Valid BidCreateDto bidCreateDto){
         return new BidDto(bidService.save(bidCreateDto.toBid()));
     }
+
+    @PutMapping(consumes = "application/json")
+    public void update(@RequestBody @Valid BidDto bidDto){
+        bidService.update(bidDto.toBid());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id){
+        bidService.deleteById(id);
+    }
+
 }

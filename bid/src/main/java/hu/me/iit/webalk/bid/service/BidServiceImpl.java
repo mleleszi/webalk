@@ -4,6 +4,7 @@ package hu.me.iit.webalk.bid.service;
 import hu.me.iit.webalk.bid.controller.BidCreateDto;
 import hu.me.iit.webalk.bid.repository.BidEntity;
 import hu.me.iit.webalk.bid.repository.BidRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -38,6 +39,23 @@ public class BidServiceImpl implements BidService {
     @Override
     public Bid save(Bid bid) {
         return new Bid(bidRepository.save(bid.toEntity()));
+    }
+
+    @Override
+    public void update(Bid bid) {
+        Optional<BidEntity> optionalBidEntity = bidRepository.findById(bid.getId());
+        if(optionalBidEntity.isEmpty())
+            throw new NoSuchEntityException(bid.getId());
+        bidRepository.save(bid.toEntity());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try {
+            bidRepository.deleteById(id);
+        } catch(EmptyResultDataAccessException ex){
+            throw new NoSuchEntityException(id);
+        }
     }
 
 }
