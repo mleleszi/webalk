@@ -1,6 +1,6 @@
 package hu.me.iit.webalk.bid.controller;
 
-import hu.me.iit.webalk.bid.service.Bid;
+
 import hu.me.iit.webalk.bid.service.BidService;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +44,30 @@ public class BidController {
     public void deleteById(@PathVariable Long id){
         bidService.deleteById(id);
     }
+
+    @GetMapping("/user/{userId}")
+    public Iterable<BidDto> getAllBidsByUserId(@PathVariable Long userId){
+        List<BidDto> bidDtoList = new ArrayList<>();
+        bidService.getAllBidsByUser(userId).forEach(b -> bidDtoList.add(new BidDto(b)));
+        return bidDtoList;
+    }
+
+    @GetMapping("/user/{userId}/count")
+    public long countBidsByUserId(@PathVariable Long userId){
+        return bidService.countBidsByUserid(userId);
+    }
+
+    @GetMapping("/sorted")
+    public Iterable<BidDto> getAllBidsSortedByBid(){
+        List<BidDto> bidDtoList = new ArrayList<>();
+        bidService.getAllBidsSorted().forEach(b -> bidDtoList.add(new BidDto(b)));
+        return bidDtoList;
+    }
+
+    @GetMapping("/highest")
+    public BidDto getHighestBid(){
+        return new BidDto(bidService.getHighestBid());
+    }
+
 
 }

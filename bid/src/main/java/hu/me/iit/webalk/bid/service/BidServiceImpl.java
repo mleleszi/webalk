@@ -1,12 +1,12 @@
 package hu.me.iit.webalk.bid.service;
 
 
-import hu.me.iit.webalk.bid.controller.BidCreateDto;
+
 import hu.me.iit.webalk.bid.repository.BidEntity;
 import hu.me.iit.webalk.bid.repository.BidRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,6 +56,33 @@ public class BidServiceImpl implements BidService {
         } catch(EmptyResultDataAccessException ex){
             throw new NoSuchEntityException(id);
         }
+    }
+
+    @Override
+    public Iterable<Bid> getAllBidsByUser(Long id) {
+        return StreamSupport.stream(bidRepository.findAllByUserId(id).spliterator(), false)
+                .map(Bid::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public long countBidsByUserid(Long userId) {
+        return bidRepository.countByUserId(userId);
+    }
+
+    @Override
+    public Iterable<Bid> getAllBidsSorted() {
+        return StreamSupport.stream(bidRepository.findAllByOrderByBidAsc().spliterator(), false)
+                .map(Bid::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Bid getHighestBid() {
+        Optional<BidEntity> optionalBidEntity = bidRepository.findTopByOrderByBidDesc();
+        if(optionalBidEntity.isEmpty())
+            throw new NoSuchEntityException(404L);
+        return new Bid();
     }
 
 }

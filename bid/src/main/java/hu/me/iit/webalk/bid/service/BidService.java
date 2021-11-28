@@ -9,4 +9,10 @@ public interface BidService {
     Bid save(Bid bid);
     void update(Bid bid);
     void deleteById(Long id);
+
+    // custom queries
+    Iterable<Bid> getAllBidsByUser(Long id);
+    long countBidsByUserid(Long userId);
+    Iterable<Bid> getAllBidsSorted();
+    Bid getHighestBid();
 }

@@ -61,7 +61,6 @@ class PeopleControllerTests {
 				.andExpect(jsonPath("@.[0].age", is(12)))
 				.andExpect(jsonPath("@.[0].name", is("asd")));
 
-
 	}
 
 	@Test
